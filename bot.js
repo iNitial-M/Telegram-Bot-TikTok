@@ -1,9 +1,10 @@
 const Telegraf = require('telegraf');
 require('dotenv/config');
 const axios = require("axios");
-const {X_RAPIDAPI_KEY} = process.env;
-const moduloTelegram = require ('./env.module');
-
+const {
+    X_RAPIDAPI_KEY
+} = process.env;
+const moduloTelegram = require('./env.module');
 
 const bot = new Telegraf.Telegraf(moduloTelegram.token);
 console.log('Bot sedang berjalan');
@@ -15,42 +16,41 @@ bot.start(content => {
     content.reply(`Kirim link tiktok dan otomatis video akan terkirim`);
 });
 
-bot.on('text', (content, next)=>{
-    try{
+bot.on('text', (content, next) => {
+    try {
         const texto = content.update.message.text;
-        const _id = '1707711054';
-        if(content.update.message.from.id = _id){
-            const id = content.update.message.from.id
-            if(texto.indexOf('tiktok.com')>-1){
-                content.reply(`Video kamu sedang di download`);         
+        const premium = 1707711054;
+        const id = content.update.message.from.id
+        if (id == premium) {
+            if (texto.indexOf('tiktok.com') > -1) {
+                content.reply(`Video kamu sedang di download`);
                 const options = {
                     method: 'GET',
                     url: 'https://tiktok-download-no-watermark.p.rapidapi.com/download',
-                    params: {url: texto},
-                    headers: 
-                    {'X-RapidAPI-Key': X_RAPIDAPI_KEY,
-                    'X-RapidAPI-Host': 'tiktok-download-no-watermark.p.rapidapi.com'}
+                    params: {
+                        url: texto
+                    },
+                    headers: {
+                        'X-RapidAPI-Key': X_RAPIDAPI_KEY,
+                        'X-RapidAPI-Host': 'tiktok-download-no-watermark.p.rapidapi.com'
+                    }
                 };
                 axios.request(options).then(function (response) {
                     console.log('Video terkirim');
                     bot.telegram.sendVideo(id, response.data);
                 }).catch(function (error) {
-                    bot.telegram.sendMessage(id,'Ada kesalahan di API');
-                    console.error(error);            
+                    bot.telegram.sendMessage(id, 'Ada kesalahan di API');
+                    console.error(error);
                 });
-            }else {
-                bot.telegram.sendMessage(id,'Anda tidak memasukkan tautan yang valid, silakan coba lagi');
+            } else {
+                bot.telegram.sendMessage(id, 'Anda tidak memasukkan tautan yang valid, silakan coba lagi');
             }
+        } else {
+            bot.telegram.sendMessage(id, 'Anda tidak memiliki akses')
         }
-        
-    
-
-    }catch(e){
+    } catch (e) {
         console.log('terjadi kesalahan dalam proses', e);
         content.reply(`Ada masalah dengan program`);
     }
-
 });
-
-
 bot.startPolling();
