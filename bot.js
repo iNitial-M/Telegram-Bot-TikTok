@@ -18,28 +18,31 @@ bot.start(content => {
 bot.on('text', (content, next)=>{
     try{
         const texto = content.update.message.text;
-        const id = '1707711054';
-        if(texto.indexOf('tiktok.com')>-1 && content.update.message.from.id){
-        content.reply(`Video kamu sedang di download`);         
-        const options = {
-            method: 'GET',
-            url: 'https://tiktok-download-no-watermark.p.rapidapi.com/download',
-            params: {url: texto},
-            headers: 
-            {'X-RapidAPI-Key': X_RAPIDAPI_KEY,
-            'X-RapidAPI-Host': 'tiktok-download-no-watermark.p.rapidapi.com'}
-        };
-
-        axios.request(options).then(function (response) {
-            console.log('Video terkirim');
-            bot.telegram.sendVideo(id, response.data);
-        }).catch(function (error) {
-            bot.telegram.sendMessage(id,'Ada kesalahan di API');
-            console.error(error);            
-        });
-    }else {
-            bot.telegram.sendMessage(id,'Anda tidak memasukkan tautan yang valid, silakan coba lagi');
-          }
+        const _id = '1707711054';
+        if(content.update.message.from.id = _id){
+            const id = content.update.message.from.id
+            if(texto.indexOf('tiktok.com')>-1){
+                content.reply(`Video kamu sedang di download`);         
+                const options = {
+                    method: 'GET',
+                    url: 'https://tiktok-download-no-watermark.p.rapidapi.com/download',
+                    params: {url: texto},
+                    headers: 
+                    {'X-RapidAPI-Key': X_RAPIDAPI_KEY,
+                    'X-RapidAPI-Host': 'tiktok-download-no-watermark.p.rapidapi.com'}
+                };
+                axios.request(options).then(function (response) {
+                    console.log('Video terkirim');
+                    bot.telegram.sendVideo(id, response.data);
+                }).catch(function (error) {
+                    bot.telegram.sendMessage(id,'Ada kesalahan di API');
+                    console.error(error);            
+                });
+            }else {
+                bot.telegram.sendMessage(id,'Anda tidak memasukkan tautan yang valid, silakan coba lagi');
+            }
+        }
+        
     
 
     }catch(e){
