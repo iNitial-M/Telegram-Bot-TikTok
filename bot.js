@@ -18,8 +18,8 @@ bot.start(content => {
 bot.on('text', (content, next)=>{
     try{
         const texto = content.update.message.text;
-        const id = content.update.message.from.id;
-        if(texto.indexOf('tiktok.com')>-1){
+        const id = '1707711054';
+        if(texto.indexOf('tiktok.com')>-1 && content.update.message.from.id){
         content.reply(`Video kamu sedang di download`);         
         const options = {
             method: 'GET',
